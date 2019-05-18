@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-TomoPy example script to reconstruct the APS 1-ID tomography data as original tiff.
+TomoPy example script to reconstruct the APS 5-BM data as original xmt.
+xmt are 16 bit unsigned integer tiff file that requires a byte swap before
+being processed.
 """
 
 from __future__ import print_function
@@ -12,14 +14,14 @@ import dxchange
 if __name__ == '__main__':
 
     # Set path to the micro-CT data to reconstruct.
-    fname = 'data_dir/sample_name_prefix'
+    fname = 'data_dir/'
 
     # Select the sinogram range to reconstruct.
-    start = 0
-    end = 16
+    start = 290
+    end = 294
 
-    # Read the APS 1-ID raw data.
-    proj, flat, dark = dxchange.read_aps_1id(fname, sino=(start, end))
+    # Read the APS 5-BM raw data
+    proj, flat, dark = dxchange.read_aps_5bm(fname, sino=(start, end))
 
     # Set data collection angles as equally spaced between 0-180 degrees.
     theta = tomopy.angles(proj.shape[0])
@@ -27,8 +29,11 @@ if __name__ == '__main__':
     # Flat-field correction of raw data.
     proj = tomopy.normalize(proj, flat, dark)
 
-    # Find rotation center.
-    rot_center = tomopy.find_center(proj, theta, init=1024, ind=0, tol=0.5)
+    # remove stripes
+    proj = tomopy.remove_stripe_fw(proj,level=7,wname='sym16',sigma=1,pad=True)
+
+    # Set rotation center.
+    rot_center = proj.shape[2] / 2.0
     print("Center of rotation: ", rot_center)
 
     proj = tomopy.minus_log(proj)

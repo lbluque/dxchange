@@ -49,15 +49,8 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import logging
-logging.getLogger(__name__).addHandler(logging.NullHandler())
+from numpy.testing.utils import assert_equal
+import dxchange
 
-from dxchange.exchange import *
-from dxchange.reader import *
-from dxchange.writer import *
-
-try:
-    import pkg_resources
-    __version__ = pkg_resources.working_set.require("dxchange")[0].version
-except:
-    pass
+#def test_read_aps_8bm():
+#    proj, flat = dxchange.read_aps_8bm('data_dir/', range(0, 200), range(0, 100), file_pattern="image_00000.xrm", sino=(0, 16))

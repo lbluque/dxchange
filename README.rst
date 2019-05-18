@@ -2,13 +2,16 @@
 DXchange
 ========
 
-Scientific Data Exchange (dxchange) describes a simple data model that is 
-designed to interface, or **exchange** data from different instruments to 
-data analysis tools `[ref] <http://dxchange.readthedocs.org/en/latest/source/credits.html#decarlo-14a>`_.
+`DXchange <https://github.com/data-exchange/DXchange>`_ provides an interface with
+`tomoPy <http://tomopy.readthedocs.org/>`_ and raw tomographic 
+data collected at different synchrotron facilities including the Data Exchange
+file format (`DXfile <http://dxfile.readthedocs.org/>`_),
+currently in use at the Advanced Photon Source beamline 2-BM and 32-ID, 
+at the Swiss Light Source Tomcat beamline and at the Elettra SYRMEP beamline.
 
 Documentation
 -------------
-* https://dxchange.rtfd.org
+* http://dxchange.readthedocs.io
 
 Features
 --------

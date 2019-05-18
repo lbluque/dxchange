@@ -4,7 +4,7 @@
 """
 TomoPy example script to reconstruct the xrm tomography data from
 the original stack of xrm. To use rename the xrm data as 
-radios/image00000.xrm and flats/image00000.xrm
+radios/image_00000.xrm and flats/ref_00000.xrm
 """
 
 from __future__ import print_function
@@ -27,8 +27,8 @@ if __name__ == '__main__':
     start = 0
     end = 16
 
-    # Read the Anka tiff raw data.
-    proj, flat = dxchange.read_aps_26id(fname, ind_tomo, ind_flat,
+    # APS 26-ID has an x-radia system collecting raw data as xrm.
+    proj, flat, metadata = dxchange.read_aps_26id(fname, ind_tomo, ind_flat,
                                                  sino=(start, end))
 
     # make the darks
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     proj = tomopy.normalize(proj, flat, dark)
 
     # Find rotation center.
-    rot_center = tomopy.find_center(proj, theta, emission=False, init=1024,
+    rot_center = tomopy.find_center(proj, theta, init=1024,
                                     ind=0, tol=0.5)
     print("Center of rotation: ", rot_center)
 

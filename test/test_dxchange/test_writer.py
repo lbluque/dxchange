@@ -45,19 +45,38 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
-
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import logging
-logging.getLogger(__name__).addHandler(logging.NullHandler())
+import unittest
+from numpy.testing.utils import assert_equal
+import dxchange.writer as writer
 
-from dxchange.exchange import *
-from dxchange.reader import *
-from dxchange.writer import *
 
-try:
-    import pkg_resources
-    __version__ = pkg_resources.working_set.require("dxchange")[0].version
-except:
-    pass
+class remove_trailing_digits_test_case(unittest.TestCase):
+    def test_remove_trailing_digits_removes_zeroes(self):
+        text, number_of_digits = writer.remove_trailing_digits("someText0000")
+        assert_equal(text, "someText")
+
+    def test_remove_trailing_digits_removes_correct_number_of_zeroes(self):
+        text, number_of_digits = writer.remove_trailing_digits("someText0000")
+        assert_equal(number_of_digits, 4)
+
+    def test_remove_trailing_digits_removes_digits(self):
+        text, number_of_digits = writer.remove_trailing_digits(
+            "someText1234567890")
+        assert_equal(text, "someText")
+
+    def test_remove_trailing_digits_does_not_remove_digits_in_the_middle(self):
+        text, number_of_digits = writer.remove_trailing_digits(
+            "8s7o6m5e4T3e2x1t00.0000")
+        assert_equal(text, "8s7o6m5e4T3e2x1t00.")
+
+    def test_remove_trailing_digits_handles_not_having_digits(self):
+        text, number_of_digits = writer.remove_trailing_digits("someText")
+        assert_equal(text, "someText")
+
+    def test_remove_trailing_digits_handles_empty_string(self):
+        text, number_of_digits = writer.remove_trailing_digits("")
+        assert_equal(text, "")
+        assert_equal(number_of_digits, 0)
